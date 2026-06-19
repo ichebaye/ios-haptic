@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iOS Haptic Trick</title>
+<style>
+  body {
+    font-family: -apple-system, system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: #f2f2f7;
+  }
+  button {
+    font-size: 18px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    border: none;
+    background: #007aff;
+    color: #fff;
+  }
+  p {
+    max-width: 320px;
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+  <button id="trigger">Тапни меня</button>
+  <p>Работает только в Safari на iOS 18+. Использует недокументированный атрибут <code>switch</code> у чекбокса.</p>
+
+  <!-- скрытый переключатель, единственный элемент в iOS Safari, дающий хаптик-отклик -->
+  <input type="checkbox" switch id="haptic-switch" hidden>
+  <label for="haptic-switch" id="haptic-label" hidden></label>
+
+  <script src="haptic.js"></script>
+  <script>
+    document.getElementById('trigger').addEventListener('click', () => {
+      triggerHaptic();
+    });
+  </script>
+</body>
+</html>
