@@ -15,13 +15,31 @@
     margin: 0;
     background: #f2f2f7;
   }
-  button {
+  .haptic-button {
+    position: relative;
+    display: inline-block;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .haptic-button button {
     font-size: 18px;
     padding: 14px 28px;
     border-radius: 12px;
     border: none;
     background: #007aff;
     color: #fff;
+    pointer-events: none;
+  }
+  /* реальный switch лежит поверх кнопки на весь её размер; палец тапает
+     именно по нему, поэтому iOS считает это прямым взаимодействием
+     пользователя и выдаёт хаптик */
+  .haptic-button input[type="checkbox"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
   }
   p {
     max-width: 320px;
@@ -32,18 +50,17 @@
 </style>
 </head>
 <body>
-  <button id="trigger">Тапни меня</button>
-  <p>Работает только в Safari на iOS 18+. Использует недокументированный атрибут <code>switch</code> у чекбокса.</p>
-
-  <!-- скрытый переключатель, единственный элемент в iOS Safari, дающий хаптик-отклик -->
-  <input type="checkbox" switch id="haptic-switch" hidden>
-  <label for="haptic-switch" id="haptic-label" hidden></label>
-
-  <script src="haptic.js"></script>
-  <script>
-    document.getElementById('trigger').addEventListener('click', () => {
-      triggerHaptic();
-    });
-  </script>
+  <div class="haptic-button">
+    <button tabindex="-1">Тапни меня</button>
+    <label for="haptic-switch">
+      <input type="checkbox" switch id="haptic-switch">
+    </label>
+  </div>
+  <p>
+    Работает только в Safari на iOS 18+. Хаптик срабатывает только от
+    прямого тапа по нативному <code>&lt;input switch&gt;</code> —
+    начиная с iOS 26.5 вызов через скрипт (<code>label.click()</code>)
+    больше не даёт вибро.
+  </p>
 </body>
 </html>
